@@ -1,0 +1,43 @@
+{
+  "name": "cnipa-patent-writer",
+  "version": "0.2.0",
+  "description": "Agent Skill for drafting Chinese invention patents (CNIPA) — template formatting only, your own technical content. Supports Cursor/Claude Code, Word native math (OMML), and CNIPA docx assembly.",
+  "bin": {
+    "cnipa-patent-writer": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "SKILL.md",
+    "references/",
+    "scripts/",
+    "requirements.txt",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "cursor",
+    "claude",
+    "claude-code",
+    "agent-skill",
+    "skill",
+    "patent",
+    "cnipa",
+    "发明专利",
+    "专利",
+    "docx",
+    "math2docx"
+  ],
+  "homepage": "https://github.com/Trisyp/cnipa-patent-writer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Trisyp/cnipa-patent-writer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Trisyp/cnipa-patent-writer/issues"
+  },
+  "author": "Trisyp",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.7"
+  }
+}
