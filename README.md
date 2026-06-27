@@ -12,6 +12,8 @@
 - **Word 原生公式**：正文中的 `$...$`、`\(...\)` LaTeX 自动转为 Word 可编辑公式（OMML，依赖 `math2docx`）。
 - **配图据内容生成**：matplotlib / graphviz，单列竖排、框随文字自适应、纯黑白。
 - **可视化校验**：`docx → pdf → 逐页 png`，逐页核对页眉、页码、字体与配图。
+- **成稿公式校验**：`validate_patent_docx.py` 检查 `$` 残留、公式内中文、草稿痕迹。
+- **审查加固清单**：`hardening-checklist.md` 覆盖审查员/数学/算法/业务视角。
 
 ## 仓库结构
 
@@ -23,7 +25,8 @@ cnipa-patent-writer/
 │   ├── writing-style.md           行文范式、权利要求写法、反面清单
 │   ├── docx-format.md             克隆复刻、四节四页眉、页码
 │   ├── cnipa-format-spec.md       CNIPA 精确版式参数
-│   └── figures.md                 配图六条硬规则
+│   ├── figures.md                 配图六条硬规则
+│   └── hardening-checklist.md     审查加固清单（审查员/数学/算法/业务）
 └── scripts/
     ├── inspect_template.py        扒模板版式（只读格式）
     ├── build_patent.py            有模板装配器
@@ -32,7 +35,8 @@ cnipa-patent-writer/
     ├── make_figures.py            matplotlib 配图
     ├── gen_figures_graphviz.py    graphviz 流程/架构图
     ├── gen_json_figs.py           JSON 面板图
-    └── render_check.py            docx 逐页渲染校验
+    ├── render_check.py            docx 逐页渲染校验
+    └── validate_patent_docx.py    成稿公式与草稿痕迹校验
 ```
 
 ## 安装
