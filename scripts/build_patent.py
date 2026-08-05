@@ -27,11 +27,12 @@
     b.spec_title("一种……方法及系统")              # 说明书标题(技术领域前,居中) -> 以下为说明书节
     b.heading("技术领域"); b.body_justify("本发明涉及……")
     b.heading("背景技术"); b.body_justify("……")
-    b.heading("发明内容"); b.body("……")
-    b.body("有益效果："); b.body("本发明……")
+    b.heading("发明内容"); b.body("……")           # 步骤概述+进一步地；勿写正式权项
+    b.body("本发明与现有技术相比，其显著优点为：")  # 优点在发明内容末；勿另开有益效果标题
+    b.body("（1）……"); b.body("（2）……")
     b.heading("附图说明"); b.body("图1为……示意图；")
-    b.heading("具体实施方式"); b.body("下面结合……"); b.body("为了让……")
-    b.subhead("实施例1："); b.body("步骤S1：……"); b.body("在本步骤中，……")
+    b.heading("具体实施方式"); b.body("……")
+    b.body("步骤1：……"); b.body("进一步地，在其中一个实施例中，……")
     b.figure("fig1.png", 4.8); b.caption("图1")    # -> 说明书附图节
     b.save("输出.docx")
 

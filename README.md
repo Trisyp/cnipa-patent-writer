@@ -3,7 +3,7 @@
 > **Cursor / Claude Code Agent Skill**：撰写中国发明专利（CNIPA）申请文档（`.docx`）。  
 > **只借模板版式，绝不抄模板技术内容**——正文与配图全部据你的技术方案重新生成。
 
-一个用于撰写**中国发明专利**申请文档的 Agent Skill。有模板时严格套用页眉页脚、分节、字体字号、缩进行距、分页与附图编排；无模板时按 CNIPA 标准版式生成。覆盖**说明书摘要 / 权利要求书 / 说明书 / 说明书附图**，并支持白底黑线配图与逐页渲染校验。
+一个用于撰写**中国发明专利**申请文档的 Agent Skill。有模板时严格套用页眉页脚、分节、字体字号、缩进行距、分页与附图编排；无模板时按 CNIPA 标准版式生成。覆盖**说明书摘要 / 摘要附图（参考模板） / 权利要求书 / 说明书 / 说明书附图**，并支持白底黑线配图与逐页渲染校验。
 
 ## 亮点
 
@@ -22,11 +22,13 @@ cnipa-patent-writer/
 ├── SKILL.md                       技能入口（工作流、原则、资源索引）
 ├── requirements.txt               Python 依赖
 ├── references/
-│   ├── writing-style.md           行文范式、权利要求写法、反面清单
-│   ├── docx-format.md             克隆复刻、四节四页眉、页码
+│   ├── writing-style.md           行文范式、正式权项只写一遍、反面清单
+│   ├── claims-quality.md          10 条合并规程 + CNIPA 质量要点
+│   ├── docx-format.md             克隆复刻、五节/四节页眉、页码
 │   ├── cnipa-format-spec.md       CNIPA 精确版式参数
 │   ├── figures.md                 配图六条硬规则
 │   └── hardening-checklist.md     审查加固清单（审查员/数学/算法/业务）
+├── 参考模板.docx                  默认五节版式基准（只借格式）
 └── scripts/
     ├── inspect_template.py        扒模板版式（只读格式）
     ├── build_patent.py            有模板装配器
