@@ -14,6 +14,12 @@ blocks.json 结构:
   figure 的 payload 可以是图片路径字符串,或 {"path": "..."} 的 JSON 串。
   **内容据本技术方案撰写,勿照搬任何模板/范文的技术内容。**
 
+  ★★★ 区块顺序硬约束（违反会双份权利要求）★★★
+    必须：abstract* → claim*（约10条）→ title（发明名称）→ h1/body… → figure*
+    禁止：title 出现在 claim 之前。
+    原因：本脚本把「第一个 title 及其后非 figure 块」整段写入说明书；
+    若 title 在前，则 abstract/claim 会落入说明书，与权利要求书重复。
+
 产出 4 分节:说明书摘要 / 权利要求书 / 说明书 / 说明书附图,
 各节独立页眉(居中加粗15pt+下边框线)、权要与说明书各自页码从1起、各节另起页;
 正文 宋体12pt·首行缩进2字·1.5倍行距;发明名称 黑体14pt居中;
@@ -207,6 +213,21 @@ def build(blocks_path, out_path):
     claim_blocks = [b for b in BLOCKS if b[0] == "claim"]
     fig_blocks = [b for b in BLOCKS if b[0] == "figure"]
     ti = next((i for i, b in enumerate(BLOCKS) if b[0] == "title"), None)
+    # 说明书 = 第一个 title 起（含 title）的非 figure 块。故 title 必须在全部 claim 之后。
+    if ti is not None:
+        before_title = BLOCKS[:ti]
+        claims_after = any(b[0] == "claim" for b in BLOCKS[ti:])
+        if claims_after:
+            raise SystemExit(
+                "[build_patent_cnipa] 致命：存在位于 title 之后的 claim 块，"
+                "会写入说明书造成双份权利要求。请改为 abstract→claim→title→body→figure。"
+            )
+        bad = sorted({b[0] for b in before_title if b[0] not in ("abstract", "claim")})
+        if bad:
+            raise SystemExit(
+                "[build_patent_cnipa] 致命：title 之前只允许 abstract/claim，"
+                f"发现 {bad}。正确顺序：abstract→claim→title→body→figure。"
+            )
     spec_blocks = [b for b in (BLOCKS[ti:] if ti is not None else []) if b[0] != "figure"]
 
     doc = Document()

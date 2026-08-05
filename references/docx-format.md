@@ -123,6 +123,9 @@ b.save("输出.docx")     # 自动:按模板挂五节/四节页眉 + 页脚页�
 说明书附图）。正文宋体 12pt、首行缩进 2 字、1.5 倍行距；权利要求书/说明书各自页码从 1 起（以实测为准）。
 - 输入是**区块 JSON**（`{"title":…, "blocks":[["abstract",…],["claim",…],["title",…],["h1",…],["body",…],
   ["code",…],["figure",…]]}`），而非 PatentBuilder 的链式 API。用法：`python build_patent_cnipa.py blocks.json 输出.docx`。
+- **区块顺序硬约束**：`abstract* → claim* → title → h1/body… → figure*`。  
+  脚本把**第一个 `title` 起**写入说明书；`title` 若在 `claim` 前，权项会进说明书 → **双份权利要求**（见 `lessons-learned.md` L1）。  
+  `build_patent_cnipa.py` 已对错误顺序 `raise SystemExit`。
 - 它会自动按句拆长段、按分号拆权利要求、半角标点归全角（同克隆版逻辑）。
 - 附图节默认**清空页脚=无页码**（无模板可参照时的合理缺省）；克隆版则**据模板实测逐节复刻**附图页码处理
   （可能续接、可能独立无页码），二者差异仅因兜底版没有模板可还原——无模板时按标准缺省即可。

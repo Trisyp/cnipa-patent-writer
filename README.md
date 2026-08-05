@@ -12,7 +12,8 @@
 - **Word 原生公式**：正文中的 `$...$`、`\(...\)` LaTeX 自动转为 Word 可编辑公式（OMML，依赖 `math2docx`）。
 - **配图据内容生成**：matplotlib / graphviz，单列竖排、框随文字自适应、纯黑白。
 - **可视化校验**：`docx → pdf → 逐页 png`，逐页核对页眉、页码、字体与配图。
-- **成稿公式校验**：`validate_patent_docx.py` 检查 `$` 残留、公式内中文、草稿痕迹。
+- **成稿公式校验**：`validate_patent_docx.py` 检查 `$` 残留、公式内中文、草稿痕迹、**说明书内双份权项**、独立「有益效果」标题。
+- **踩坑防再发**：`lessons-learned.md`（装配顺序、实施方式提纲化、公式「其中」、中文优先、AI I/O 等）。
 - **审查加固清单**：`hardening-checklist.md` 覆盖审查员/数学/算法/业务视角。
 
 ## 仓库结构
@@ -24,9 +25,10 @@ cnipa-patent-writer/
 ├── references/
 │   ├── writing-style.md           行文范式、正式权项只写一遍、反面清单
 │   ├── claims-quality.md          10 条合并规程 + CNIPA 质量要点
-│   ├── docx-format.md             克隆复刻、五节/四节页眉、页码
+│   ├── lessons-learned.md         历次踩坑防再发（写前必扫）
+│   ├── docx-format.md             克隆复刻、五节/四节页眉、页码、区块顺序
 │   ├── cnipa-format-spec.md       CNIPA 精确版式参数
-│   ├── figures.md                 配图六条硬规则
+│   ├── figures.md                 配图七条硬规则
 │   └── hardening-checklist.md     审查加固清单（审查员/数学/算法/业务）
 ├── 参考模板.docx                  默认五节版式基准（只借格式）
 └── scripts/

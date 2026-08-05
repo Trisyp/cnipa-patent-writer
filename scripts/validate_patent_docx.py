@@ -88,6 +88,27 @@ def validate(path: Path) -> int:
         (idx, p) for idx, p in enumerate(paragraphs, 1) if _has_mixed_ascii_punct(p)
     ]
 
+    # L1: formal claim language must not appear in 说明书 (after 技术领域 / 发明名称 body).
+    spec_start = None
+    for idx, p in enumerate(paragraphs):
+        if p.strip() in ("技术领域", "背景技术") or p.strip().startswith("技术领域"):
+            spec_start = idx
+            break
+    dup_claims: list[tuple[int, str]] = []
+    if spec_start is not None:
+        claim_like = re.compile(
+            r"(^根据权利)|(^(\d+)[\.．]\s*一种.+其特征在于)|(^(\d+)[\.．]根据权利)"
+        )
+        for idx, p in enumerate(paragraphs[spec_start:], spec_start + 1):
+            if claim_like.search(p.replace(" ", "")):
+                dup_claims.append((idx, p))
+
+    benefit_heading = [
+        (idx, p)
+        for idx, p in enumerate(paragraphs, 1)
+        if p.strip() in ("有益效果", "本发明的有益效果")
+    ]
+
     metrics = {
         "paragraphs": len(paragraphs),
         "formulas": len(formulas),
@@ -96,6 +117,8 @@ def validate(path: Path) -> int:
         "plain_backslash": len(plain_backslash),
         "internal_terms": len(internal),
         "mixed_ascii_punct": len(mixed_punct),
+        "dup_claims_in_spec": len(dup_claims),
+        "benefit_effect_heading": len(benefit_heading),
     }
 
     print(f"\nDOC {path}")
@@ -113,12 +136,20 @@ def validate(path: Path) -> int:
         failures.append("internal draft terms")
     if mixed_punct:
         failures.append("mixed ASCII punctuation near Chinese text")
+    if dup_claims:
+        failures.append(
+            "formal claim text found after 技术领域 (duplicate claims / bad block order)"
+        )
+    if benefit_heading:
+        failures.append("standalone 「有益效果」heading (use 显著优点 in 发明内容)")
 
     samples = {
         "formula_cjk_or_cn_punct": formula_cjk,
         "plain_backslash": plain_backslash,
         "internal_terms": internal,
         "mixed_ascii_punct": mixed_punct,
+        "dup_claims_in_spec": dup_claims,
+        "benefit_effect_heading": benefit_heading,
     }
     for name, hits in samples.items():
         if hits:
