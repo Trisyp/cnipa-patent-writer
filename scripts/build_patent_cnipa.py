@@ -14,20 +14,14 @@ blocks.json 结构:
   figure 的 payload 可以是图片路径字符串,或 {"path": "..."} 的 JSON 串。
   **内容据本技术方案撰写,勿照搬任何模板/范文的技术内容。**
 
-  ★★★ 区块顺序硬约束（违反会双份权利要求）★★★
-    必须：abstract* → claim*（约10条）→ title（发明名称）→ h1/body… → figure*
-    禁止：title 出现在 claim 之前。
-    原因：本脚本把「第一个 title 及其后非 figure 块」整段写入说明书；
-    若 title 在前，则 abstract/claim 会落入说明书，与权利要求书重复。
-
 产出 4 分节:说明书摘要 / 权利要求书 / 说明书 / 说明书附图,
 各节独立页眉(居中加粗15pt+下边框线)、权要与说明书各自页码从1起、各节另起页;
 正文 宋体12pt·首行缩进2字·1.5倍行距;发明名称 黑体14pt居中;
-章节标题14pt加粗左对齐段前后7.8pt;实施例子标题可选12pt加粗;
+章节标题14pt加粗左对齐段前后7.8pt;实施例X:/有益效果: 12pt加粗;
 权利要求按";"分句成段、正文长段按句拆分、半角标点归全角。
 版式参数说明见 references/cnipa-format-spec.md(以用户模板实测为准时改对应参数)。
 """
-import sys, json, re, os
+import sys, json, re
 from docx import Document
 from docx.shared import Pt, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING, WD_BREAK
@@ -35,11 +29,6 @@ from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from PIL import Image
-
-_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-if _SCRIPT_DIR not in sys.path:
-    sys.path.insert(0, _SCRIPT_DIR)
-from docx_math import fill_docx_paragraph
 
 SONG = "宋体"; HEI = "黑体"; MONO = "Courier New"
 SEG_MIN = 150         # 正文长段拆分目标字数(按模板段长调,常见中位~68/最长~530)
@@ -61,7 +50,7 @@ def body_para(doc, text):
     pf.line_spacing_rule = WD_LINE_SPACING.ONE_POINT_FIVE
     pf.space_before = Pt(0); pf.space_after = Pt(0)
     p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY; indent2(p)
-    fill_docx_paragraph(p, text, style_run=lambda r: set_font(r, size=12))
+    set_font(p.add_run(text), size=12)
 
 def heading(doc, text, kind):
     p = doc.add_paragraph(); pf = p.paragraph_format
@@ -69,14 +58,14 @@ def heading(doc, text, kind):
     if kind == "title":
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         pf.space_before = Pt(6); pf.space_after = Pt(10)
-        fill_docx_paragraph(p, text, style_run=lambda r: set_font(r, east=HEI, latin=HEI, size=14, bold=True))
+        set_font(p.add_run(text), east=HEI, latin=HEI, size=14, bold=True)
     elif kind == "h1":
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
         pf.space_before = Pt(7.8); pf.space_after = Pt(7.8)
-        fill_docx_paragraph(p, text, style_run=lambda r: set_font(r, size=14, bold=True))
+        set_font(p.add_run(text), size=14, bold=True)
     else:  # h2
         pf.space_before = Pt(0); pf.space_after = Pt(0); indent2(p)
-        fill_docx_paragraph(p, text, style_run=lambda r: set_font(r, size=12, bold=True))
+        set_font(p.add_run(text), size=12, bold=True)
 
 def add_code(doc, text):
     for ln in text.split("\n"):
@@ -213,21 +202,6 @@ def build(blocks_path, out_path):
     claim_blocks = [b for b in BLOCKS if b[0] == "claim"]
     fig_blocks = [b for b in BLOCKS if b[0] == "figure"]
     ti = next((i for i, b in enumerate(BLOCKS) if b[0] == "title"), None)
-    # 说明书 = 第一个 title 起（含 title）的非 figure 块。故 title 必须在全部 claim 之后。
-    if ti is not None:
-        before_title = BLOCKS[:ti]
-        claims_after = any(b[0] == "claim" for b in BLOCKS[ti:])
-        if claims_after:
-            raise SystemExit(
-                "[build_patent_cnipa] 致命：存在位于 title 之后的 claim 块，"
-                "会写入说明书造成双份权利要求。请改为 abstract→claim→title→body→figure。"
-            )
-        bad = sorted({b[0] for b in before_title if b[0] not in ("abstract", "claim")})
-        if bad:
-            raise SystemExit(
-                "[build_patent_cnipa] 致命：title 之前只允许 abstract/claim，"
-                f"发现 {bad}。正确顺序：abstract→claim→title→body→figure。"
-            )
     spec_blocks = [b for b in (BLOCKS[ti:] if ti is not None else []) if b[0] != "figure"]
 
     doc = Document()

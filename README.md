@@ -23,24 +23,21 @@ cnipa-patent-writer/
 ├── SKILL.md                       技能入口（工作流、原则、资源索引）
 ├── requirements.txt               Python 依赖
 ├── references/
-│   ├── writing-style.md           行文范式、正式权项只写一遍、反面清单
-│   ├── claims-quality.md          10 条合并规程 + CNIPA 质量要点
-│   ├── lessons-learned.md         历次踩坑防再发（写前必扫）
-│   ├── docx-format.md             克隆复刻、五节/四节页眉、页码、区块顺序
+│   ├── writing-style.md           行文范式、反面清单
+│   ├── docx-format.md             克隆复刻、页眉分节、页码
 │   ├── cnipa-format-spec.md       CNIPA 精确版式参数
-│   ├── figures.md                 配图七条硬规则
-│   └── hardening-checklist.md     审查加固清单（审查员/数学/算法/业务）
-├── 参考模板.docx                  默认五节版式基准（只借格式）
+│   ├── figures.md                 配图硬规则
+│   └── omml-equations.md          OMML 公式 / 空角标排查
+├── 参考模板.docx                  默认版式基准（只借格式）
 └── scripts/
     ├── inspect_template.py        扒模板版式（只读格式）
     ├── build_patent.py            有模板装配器
     ├── build_patent_cnipa.py      无模板装配器
-    ├── docx_math.py               LaTeX → Word 原生公式
+    ├── omml_utils.py              OMML 公式构建
     ├── make_figures.py            matplotlib 配图
     ├── gen_figures_graphviz.py    graphviz 流程/架构图
     ├── gen_json_figs.py           JSON 面板图
-    ├── render_check.py            docx 逐页渲染校验
-    └── validate_patent_docx.py    成稿公式与草稿痕迹校验
+    └── render_check.py            docx 逐页渲染校验
 ```
 
 ## 安装
