@@ -9,12 +9,17 @@
 
 - **红线**：只借格式、绝不抄模板里的具体技术（架构、模块、流程、配图种类与数量）。
 - **双装配器**：有模板 → `build_patent.py` 克隆版式；无模板 → `build_patent_cnipa.py` 按 CNIPA 标准生成。
-- **Word 原生公式**：正文中的 `$...$`、`\(...\)` LaTeX 自动转为 Word 可编辑公式（OMML，依赖 `math2docx`）。
-- **配图据内容生成**：matplotlib / graphviz，单列竖排、框随文字自适应、纯黑白。
+- **Word 原生公式**：正文中的 `$...$`、`\(...\)` LaTeX 自动转为 Word 可编辑公式（OMML，依赖 `math2docx`）；禁悬空式号、nested `m:e`。
+- **配图据内容生成**：matplotlib / graphviz，单列竖排、框随文字自适应、纯黑白；禁图内图号标题、禁边交叉穿框、交叉顶绕。
 - **可视化校验**：`docx → pdf → 逐页 png`，逐页核对页眉、页码、字体与配图。
+- **源码工程化门禁**（v0.3）：内容源驱动、CLAIM 三处同源、build 末 audit、反组合/从属独立默认/状态机/交付物清单——见 `SKILL.md`。
 - **成稿公式校验**：`validate_patent_docx.py` 检查 `$` 残留、公式内中文、草稿痕迹、**说明书内双份权项**、独立「有益效果」标题。
-- **踩坑防再发**：`lessons-learned.md`（装配顺序、实施方式提纲化、公式「其中」、中文优先、AI I/O 等）。
-- **审查加固清单**：`hardening-checklist.md` 覆盖审查员/数学/算法/业务视角。
+- **踩坑防再发**：`SKILL.md` 易踩坑速查 + `references/*` 硬规则（附图/OMML/行文）。
+- **审查加固清单**：`hardening-checklist.md` 覆盖审查员/数学/算法/业务视角（若仓库含该文件）。
+
+### Changelog（摘要）
+- **0.3.0**：完善踩坑门禁——源码驱动与 bak、一致性 audit、创造性反组合/检索纪要/权要走读、从属独立默认、附图禁图内标题与交叉顶绕、OMML 悬空式号与正文同构、交付物模板名与协作保密。
+- **0.2.0**：OMML 聚焦重写与装配/渲染校验。
 
 ## 仓库结构
 
@@ -44,6 +49,11 @@ cnipa-patent-writer/
 
 ### 方式一：Cursor 个人技能（推荐）
 
+安装路径即 Cursor 个人技能目录（**原地更新即安装**）：
+
+- Windows：`%USERPROFILE%\.cursor\skills\cnipa-patent-writer`
+- macOS / Linux：`~/.cursor/skills/cnipa-patent-writer`
+
 ```bash
 git clone https://github.com/Trisyp/cnipa-patent-writer.git
 cp -r cnipa-patent-writer ~/.cursor/skills/cnipa-patent-writer
@@ -51,6 +61,7 @@ cp -r cnipa-patent-writer ~/.cursor/skills/cnipa-patent-writer
 # Copy-Item -Recurse cnipa-patent-writer $env:USERPROFILE\.cursor\skills\cnipa-patent-writer
 ```
 
+若该目录已是 git clone，直接在此路径改文件并 `git pull` / commit 即可，无需再复制一份。
 装好后在 Cursor 里说「写专利」「起草发明专利」，或 `@cnipa-patent-writer` 手动附加技能。
 
 ### 方式二：`npx`（Claude Code 等）

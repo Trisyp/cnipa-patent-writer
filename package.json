@@ -1,6 +1,6 @@
 {
   "name": "cnipa-patent-writer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Agent Skill for drafting Chinese invention patents (CNIPA) — template formatting only, your own technical content. Supports Cursor/Claude Code, Word native math (OMML), and CNIPA docx assembly.",
   "bin": {
     "cnipa-patent-writer": "bin/cli.js"
